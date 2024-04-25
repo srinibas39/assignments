@@ -23,4 +23,13 @@ app.get('/errorCount', function(req, res) {
   res.status(200).json({ errorCount });
 });
 
+function handleException(err,req,res,next){
+    errorCount++;
+    res.status(404).json({
+      msg:`your endpoints has this many error ${errorCount}`
+    })
+}
+
+app.use('/',handleException);
+
 module.exports = app;

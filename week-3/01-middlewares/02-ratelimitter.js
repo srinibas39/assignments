@@ -11,10 +11,32 @@ const app = express();
 // You have been given a numberOfRequestsForUser object to start off with which
 // clears every one second
 
+app.use(express.json())
+
 let numberOfRequestsForUser = {};
 setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000)
+
+
+function rateLimit(req,res,next){
+  const userId = req.headers['user-id'];
+  if(numberOfRequestsForUser[userId]){
+    if( numberOfRequestsForUser[userId] > 5){
+       res.json({
+        msg:"you are blocked"
+       })
+    }
+    numberOfRequestsForUser[userId]++;
+    next();
+  }
+  else{
+    numberOfRequestsForUser[userId] = 1
+    next();
+  }
+}
+
+app.use('/',rateLimit)
 
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });

@@ -5,15 +5,25 @@ mongoose.connect('your-mongodb-url');
 
 // Define schemas
 const AdminSchema = new mongoose.Schema({
-    // Schema definition here
+    username:String,
+    password:Strin
 });
 
 const UserSchema = new mongoose.Schema({
-    // Schema definition here
+    username:String,
+    password:String,
+    purchasedCourses:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Course"
+    }]
+
 });
 
 const CourseSchema = new mongoose.Schema({
-    // Schema definition here
+    title:String,
+    description:String,
+    price:Number,
+    imageLink:String
 });
 
 const Admin = mongoose.model('Admin', AdminSchema);
